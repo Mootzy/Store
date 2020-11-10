@@ -3,7 +3,9 @@ Store inventory page utilizing login page, welcome page, file IO reader and Jfra
 
 
 Username = admin
+
 Password = admin
 
 load text file from fileChooser.
+
 Must be seperate line from line
