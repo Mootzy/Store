@@ -10,26 +10,39 @@ import java.awt.*;
 public class WelcomePage implements ActionListener {
 
     //JRadioButton test = new JRadioButton(userInventory.get(0).toUserString());
-	final File item = new File("Item.txt");
 
+
+    //File for inputing admin's inventory text file.
+    final File item = new File("Item.txt");
+
+    //Frame to display entier GUI
     final JFrame frame = new JFrame();
 
-	final String userDir = System.getProperty("user.home");
+    final String userDir = System.getProperty("user.home");
+
+    //FileChooser for when ADMIN selects
     final JFileChooser fc = new JFileChooser(userDir);
 
+    //ADMIN label denoting this is the stores current Inventory
     final JLabel welcomeLabel = new JLabel("Store Inventory");
 
+    //Admin Text area prompting for new .txt file to update inventory
     final JTextArea itemList = new JTextArea("Please Select a file to open to import new inventory");
+
+    //USER text area to display what is available to purchase and welcome mssgs.
     final JTextArea shopMenu = new JTextArea();
     final JTextArea custWelcomeTxt = new JTextArea("Welcome Valued Customer!");
     final JTextArea userPortalBanner = new JTextArea("Our Current Selection: " + "\n");
 
+    //ADMIN selectbutton to pick new inventory .txt fild to upload
     final JButton selectButton = new JButton("Select");
 
-    final  JButton viewCart = new JButton(("view cart/checkout"));
-    final  JButton addToCart = new JButton("add to cart");
+    //USER buttons to viewCart and AddtoCart, NEITHER currently working
+    final JButton viewCart = new JButton(("view cart/checkout"));
+    final JButton addToCart = new JButton("add to cart");
 
-	final ArrayList<Item> userInventory = new ArrayList<>();
+    //Create list for user to see what
+    final ArrayList<Item> userInventory = new ArrayList<>();
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
 
 
@@ -51,7 +64,7 @@ public class WelcomePage implements ActionListener {
         /* itemList.setText ( "test" ); */
 
 
-		//code for if on ADMIN Welcome-Page
+        //code for if on ADMIN Welcome-Page build JFRAME
         if (userID.equalsIgnoreCase("admin")) {
 
 
@@ -71,8 +84,9 @@ public class WelcomePage implements ActionListener {
             frame.setSize(500, 620);
             frame.setLayout(null);
             frame.setVisible(true);
-            frame.setIconImage(
-                    Toolkit.getDefaultToolkit().getImage("C:\\Users\\tyler\\Desktop\\Photos-new-icon.png"));
+            //frame.setIconImage(
+            //   Toolkit.getDefaultToolkit().getImage("C:\\Users\\tyler\\Desktop\\Photos-new-icon.png"));
+            //no icon path currently set, does nothing ATM
         }
 
         //code for if on USERS Welcome-Page
@@ -92,34 +106,32 @@ public class WelcomePage implements ActionListener {
             readFile(item);
 
 
-
             //String userView = null;
             //shopMenu.setText(userInventory.toString());
             //shopMenu.setText(InventoryPage.inventory.toString());
             shopMenu.setText(readFile(item));
-			System.out.println(userInventory.size() + " here i am the size of userInventory");
+            System.out.println(userInventory.size() + " here i am the size of userInventory");
 
 
+            //This is a very BAD for-loop
+            //for some reason the userInventory.size() is double what is should be
+            //so we compensate by subtracting half of it...
+            //****CREATES JRADIONBUTTON FOR EACH userInventory index
+            for (int i = 0; i < userInventory.size() - userInventory.size() / 2; i++) {
+                int x = 40;
+                int y = 250;
+                test = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
+                radioButtons.add(test);
 
-			//This is a very janky for-loop
-			//for some reason the userInventory.size() is double what is should be
-			//so we compensate by subtracting half of it...
-			//****CREATES JRADIONBUTTON FOR EACH userInventory index
-			for (int i = 0; i < userInventory.size() - userInventory.size()/2; i++) {
-				int x = 40;
-				int y = 250;
-				test = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
-				radioButtons.add(test);
-
-				test.setBounds(x, y-(25 * i), 375, 25);
-				test.setVisible(true);
-				test.setFocusable(false);
-				test.addActionListener(this);
-				frame.add(radioButtons.get(i));
+                test.setBounds(x, y - (25 * i), 375, 25);
+                test.setVisible(true);
+                test.setFocusable(false);
+                test.addActionListener(this::actionPerform);
+                frame.add(radioButtons.get(i));
 
 
-				//****Bad code that hardcoded location of y vertex based on i... changed algo on line 135***
-				//group.add(test);
+                //****Bad code that hardcoded location of y vertex based on i... changed algo on line 135***
+                //group.add(test);
 				/*if (i == 0) {
 					test.setBounds(x, y - 50, 375, 25);
 				}
@@ -132,22 +144,22 @@ public class WelcomePage implements ActionListener {
 				if (i ==3 ){
 					test.setBounds(x, y -125, 375, 25);
 				}*/
-				//test.setBounds( x, 400, 375, 25);
-			}
-			//frame.add(radioButtons.get(radioButtons.size()-1));
+                //test.setBounds( x, 400, 375, 25);
+            }
+            //frame.add(radioButtons.get(radioButtons.size()-1));
 
             //TEST CODE TO SEE IF ARRAY IS PROPERPLY POPULATING
             System.out.println(userInventory + " Test code to see if array is properly pupulating for menu");
 
-			//Test code to see radionButtons<> elements
-			System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
-			System.out.println();
+            //Test code to see radionButtons<> elements
+            System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
+            System.out.println();
 
             //Add to cart button
             addToCart.setBounds(50, 500, 175, 25);
             addToCart.setVisible(true);
             addToCart.setFocusable(false);
-            addToCart.addActionListener(this);
+            addToCart.addActionListener(this::actionPerform);
 
             //ViewCart Button
             viewCart.setBounds(225, 500, 175, 25);
@@ -171,18 +183,11 @@ public class WelcomePage implements ActionListener {
             userPortalBanner.setLineWrap(true);
             userPortalBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
 
-
-            //Create JFrame and add all components
-			//frame.add(group);
-			/*frame.add(radioButtons.get(1));
-			frame.add(radioButtons.get(0));*/
-
+            //BUILD JFRAME TO DISPLAY
             frame.add(addToCart);
-            //frame.add(test);
             frame.add(userPortalBanner);
             frame.add(viewCart);
             frame.add(custWelcomeTxt);
-            //frame.add(shopMenu);
             frame.setTitle("Customer Portal");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(welcomeLabel);
@@ -205,12 +210,13 @@ public class WelcomePage implements ActionListener {
         if (a.getSource() == addToCart) {
 
             int returnVal =
-                    JOptionPane.showOptionDialog(null, "Select an item",
+                    JOptionPane.showOptionDialog(
+                            null,
+                            "Add Another Item?",
                             "Add to Cart",
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.INFORMATION_MESSAGE, null,
-                            new String[]{"1", "2", "3"}, null);
-
+                            new String[]{"no", "yes"}, null);
 
         }
     }
@@ -237,6 +243,12 @@ public class WelcomePage implements ActionListener {
         }
     }
 
+    public void addToCartAction(ActionEvent e) {
+        if (e.getSource() == addToCart) {
+            int returnVal;
+        }
+
+    }
 
     //****bad code that didnt work right the first time****** ...what did you learn?//
     /*
@@ -307,6 +319,11 @@ public class WelcomePage implements ActionListener {
             e.printStackTrace();
         }
         return customerItem;
+
+    }
+
+
+    public void removeFromQty(ArrayList<Item> userInventory, int elementToRemove) {
 
     }
 }
