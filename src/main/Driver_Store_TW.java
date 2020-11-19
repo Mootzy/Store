@@ -32,5 +32,14 @@ public class Driver_Store_TW
  *
  * GUI isnt properly displaying list from .txt document anymore, however it is creating an arrayList of the elements.
  *
+ **** Tyler Wallace Store Pt.4 Wed/Nov 18 2020****
+ *!! In order to see menu populate from array !!
+ * LOG INTO:
+ * username: user
+ * password: user
+ *
+ *
+ *
+ *
  *
  **/

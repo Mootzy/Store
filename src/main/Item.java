@@ -27,6 +27,26 @@ public class Item
 		this.sales = sales;
 	}
 
+
+
+//	UserItem (String name, String color, double cost){
+//		this.name = name;
+//		this.color = color;
+//		this.cost = cost;
+//	}
+
+	public String itemInfo(Item item)
+	{
+		String customerView = item.getName() + " " + item.getColor() + " " + item.getCost() +"\n";
+
+		return customerView;
+
+	}
+
+	public String toUserString(){
+		return name + "" + color + "" + cost + "";
+	}
+
 	@Override
 	public String toString( )
 	{

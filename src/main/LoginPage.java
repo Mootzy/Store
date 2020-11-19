@@ -108,7 +108,9 @@ public class LoginPage implements ActionListener
 			}
 		}
 	}
+	public void actionPerformeduser(ActionEvent e){
 
+	}
 	public void keyAction( KeyEvent e )
 	{
 		if ( e.getKeyCode ( ) == KeyEvent.VK_ENTER )
