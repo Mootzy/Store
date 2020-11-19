@@ -40,7 +40,7 @@ public class InventoryPage implements ActionListener {
 		addButton.addActionListener(this);
 
 
-		int userConfirm = pane.YES_NO_CANCEL_OPTION;
+		int userConfirm = JOptionPane.YES_NO_CANCEL_OPTION;
 
 
 		String itemData = "";

@@ -37,15 +37,15 @@ public class Item
 
 	public String itemInfo(Item item)
 	{
-		String customerView = item.getName() + " " + item.getColor() + " " + item.getCost() +"\n";
+		String customerView = item.getName() + " " + item.getColor() + " " + item.getCost() + "$" + "\n";
 
 		return customerView;
 
 	}
 
-	public String toUserString(){
-		return name + "" + color + "" + cost + "";
-	}
+//	public String toUserString(){
+//		return name + "" + color + "" + cost + "";
+//	}
 
 	@Override
 	public String toString( )
