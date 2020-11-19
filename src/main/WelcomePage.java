@@ -102,7 +102,7 @@ public class WelcomePage implements ActionListener {
             shopMenu.setBackground(new Color(frame.getBackground().getRGB(), true));
 
             //File item = new File("Item.txt");
-            JRadioButton test;
+            JRadioButton userOptions;
             readFile(item);
 
 
@@ -120,46 +120,47 @@ public class WelcomePage implements ActionListener {
             for (int i = 0; i < userInventory.size() - userInventory.size() / 2; i++) {
                 int x = 40;
                 int y = 250;
-                test = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
-                radioButtons.add(test);
+                userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
+                radioButtons.add(userOptions);
 
-                test.setBounds(x, y - (25 * i), 375, 25);
-                test.setVisible(true);
-                test.setFocusable(false);
-                test.addActionListener(this::actionPerform);
+                userOptions.setBounds(x, y - (25 * i), 375, 25);
+                userOptions.setVisible(true);
+                userOptions.setFocusable(false);
+                userOptions.addActionListener(this::actionPerform);
                 frame.add(radioButtons.get(i));
 
 
                 //****Bad code that hardcoded location of y vertex based on i... changed algo on line 135***
-                //group.add(test);
+                //group.add(userOptions);
 				/*if (i == 0) {
-					test.setBounds(x, y - 50, 375, 25);
+					userOptions.setBounds(x, y - 50, 375, 25);
 				}
 				if (i ==1) {
-					test.setBounds(x,y-75,375,25);
+					userOptions.setBounds(x,y-75,375,25);
 				}
 				if (i ==2) {
-					test.setBounds(x, y - 105, 375, 25);
+					userOptions.setBounds(x, y - 105, 375, 25);
 				}
 				if (i ==3 ){
-					test.setBounds(x, y -125, 375, 25);
+					userOptions.setBounds(x, y -125, 375, 25);
 				}*/
-                //test.setBounds( x, 400, 375, 25);
+                //userOptions.setBounds( x, 400, 375, 25);
             }
-            //frame.add(radioButtons.get(radioButtons.size()-1));
 
             //TEST CODE TO SEE IF ARRAY IS PROPERPLY POPULATING
-            System.out.println(userInventory + " Test code to see if array is properly pupulating for menu");
+            System.out.println(userInventory + " Test code to see if array is properly pupulating for menu, also notice the third " +
+                    "integer of nike-shirt red. This is the prior qty before added to cart");
 
             //Test code to see radionButtons<> elements
-            System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
-            System.out.println();
+           // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
+            //System.out.println();
 
             //Add to cart button
             addToCart.setBounds(50, 500, 175, 25);
             addToCart.setVisible(true);
             addToCart.setFocusable(false);
             addToCart.addActionListener(this::actionPerform);
+            addToCart.addActionListener(this::addToCartAction);
 
             //ViewCart Button
             viewCart.setBounds(225, 500, 175, 25);
@@ -226,15 +227,17 @@ public class WelcomePage implements ActionListener {
      *
      * @param e
      */
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
+
             int returnVal = fc.showOpenDialog(fc);
 
             if (returnVal == JFileChooser.APPROVE_OPTION) {
+
                 fc.setCurrentDirectory(new File("C:\\"));
                 File file = fc.getSelectedFile();
-                //readFile(file);
                 frame.dispose();
                 new InventoryPage(file);
 
@@ -244,8 +247,22 @@ public class WelcomePage implements ActionListener {
     }
 
     public void addToCartAction(ActionEvent e) {
+
         if (e.getSource() == addToCart) {
-            int returnVal;
+
+           int qtyRemoved = userInventory.get(0).getQty()-1;
+
+           userInventory.get(0).setQty(qtyRemoved);
+
+            System.out.println((userInventory.toString()+  "Test code to check updated quantity of hardcoded NIKE-SHIRT is NOT currently updating other objects quantity as unsure how to " +
+                    "get index of userInventory to properly relate to user Selected radioButton"));
+
+            /**
+             * to be used for adding cart to arrayList and keeping track of all the customers choices.
+             */
+            ArrayList<Item> cart = new ArrayList<>();
+
+
         }
 
     }
@@ -290,7 +307,7 @@ public class WelcomePage implements ActionListener {
                 userInventory.add(newItem);
 
                 //code to debug only printing cost color and name... working in console
-                System.out.println(newItem.itemInfo(newItem) + " here i am");
+               // System.out.println(newItem.itemInfo(newItem) + " here i am");
                 customerItem += newItem.itemInfo(newItem);
 
 
@@ -299,7 +316,7 @@ public class WelcomePage implements ActionListener {
                 itemData += reader.nextLine() + " \n";
 
 
-                System.out.println(itemData);
+               // System.out.println(itemData);
                 ta.setText(itemData + "\n");
 
 
