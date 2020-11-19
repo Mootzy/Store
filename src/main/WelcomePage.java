@@ -326,4 +326,6 @@ public class WelcomePage implements ActionListener {
     public void removeFromQty(ArrayList<Item> userInventory, int elementToRemove) {
 
     }
+
+
 }

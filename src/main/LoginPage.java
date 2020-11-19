@@ -6,10 +6,11 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 import javax.swing.*;
 
-public class LoginPage implements ActionListener
+public class LoginPage implements ActionListener, KeyListener
 {
 
 	JFrame frame = new JFrame ( );
@@ -46,10 +47,18 @@ public class LoginPage implements ActionListener
 		resetButton.setBounds ( 275, 150, 100, 25 );
 
 		loginButton.addActionListener ( this );
+
+
 		resetButton.addActionListener ( this );
 		resetButton.setFocusable ( false );
 
 		Color backgroundFrame = Color.decode ( "#DEF9FF" );
+
+
+		//code to set Default focus of Root Pane to loginButton so user can just press the enter key to submit form
+		frame.getRootPane().setDefaultButton(loginButton);
+		loginButton.requestFocus();
+
 
 		frame.setDefaultCloseOperation ( JFrame.EXIT_ON_CLOSE );
 		frame.setSize ( 500, 250 );
@@ -131,5 +140,20 @@ public class LoginPage implements ActionListener
 				}
 			}
 		}
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+
 	}
 }
