@@ -10,9 +10,6 @@ import java.awt.*;
 @SuppressWarnings("ALL")
 public class WelcomePage implements ActionListener {
 
-    //JRadioButton test = new JRadioButton(userInventory.get(0).toUserString());
-
-
     //File for inputing admin's inventory text file.
     final File item = new File("Item.txt");
 
@@ -35,6 +32,7 @@ public class WelcomePage implements ActionListener {
     final JTextArea custWelcomeTxt = new JTextArea("Welcome Valued Customer!");
     final JTextArea userPortalBanner = new JTextArea("Our Current Selection: " + "\n");
     final JTextArea warning = new JTextArea("Look to the console in your IDE for updated qty, after 'add to cart' button...");
+    final JOptionPane outOfQty = new JOptionPane();
 
     //ADMIN selectbutton to pick new inventory .txt fild to upload
     final JButton selectButton = new JButton("Select");
@@ -48,8 +46,17 @@ public class WelcomePage implements ActionListener {
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
 
 
+
+
+
+
+
     //Used to find value of radio Button Selection from USER
-    Integer userChoice = 0;
+    Integer userChoice = 1;
+
+
+
+
 
     WelcomePage(String userID) {
 
@@ -108,6 +115,8 @@ public class WelcomePage implements ActionListener {
             //readFile(item);
 
 
+
+
             //String userView = null;
             //shopMenu.setText(userInventory.toString());
             //shopMenu.setText(InventoryPage.inventory.toString());
@@ -128,7 +137,7 @@ public class WelcomePage implements ActionListener {
                 userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
 
                 //Used to assign numerical value to each new JRadioButton
-                userChoice += i -1  ;
+                userChoice += i - 1 ;
 
                 //Add new JRadioButton to the ArrayList<JRadioButton> radioButtons
                 radioButtons.add(userOptions);
@@ -235,6 +244,10 @@ public class WelcomePage implements ActionListener {
     }
 
 
+
+
+
+
    //Adds actionEvent to addToCart Button... stil need to make 'add another item' prompt function properly
     public void actionPerform(ActionEvent a) {
         if (a.getSource() == addToCart) {
@@ -282,12 +295,15 @@ public class WelcomePage implements ActionListener {
     public void addToCartAction(ActionEvent e) {
 
         if (e.getSource() == addToCart) {
-
-            //Create variables for what to do to items Qty and Sales
+            //  Create variables for what to do to items Qty and Sales
            int qtyRemoved = userInventory.get(userChoice).getQty()-1;
            int saleAdded = userInventory.get(userChoice).getSales() + 1;
 
-           //Set/Change the values of the QTY and SALES
+           if(userInventory.get(userChoice).getQty() == 0){
+
+           }
+
+            //  Set/Change the values of the QTY and SALES
             userInventory.get(userChoice).setQty(qtyRemoved);
             userInventory.get(userChoice).setSales(saleAdded);
 
@@ -323,7 +339,6 @@ public class WelcomePage implements ActionListener {
         }
     }
 
-
     //****bad code that didnt work right the first time****** ...what did you learn?//
     /*
      * public void ReadFileChooserOpenedFiled( ActionEvent e ) throws IOException { File file = fc.getSelectedFile ( );
@@ -333,7 +348,6 @@ public class WelcomePage implements ActionListener {
      *
      * System.out.println ( Data ); } reader.close ( ); }
      */
-
 
     /**
      * Method to read ADMIN's 'uploaded' text file and populate arrayList for menu
@@ -398,6 +412,8 @@ public class WelcomePage implements ActionListener {
         return customerItem;
 
     }
+
+
 
 
 
