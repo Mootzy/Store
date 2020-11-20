@@ -45,6 +45,7 @@ public class WelcomePage implements ActionListener {
     final ArrayList<Item> userInventory = new ArrayList<>();
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
 
+    Integer userChoice = -1;
 
     //ArrayList<Item> userInventory = new ArrayList<>();
 
@@ -103,7 +104,7 @@ public class WelcomePage implements ActionListener {
 
             //File item = new File("Item.txt");
             JRadioButton userOptions;
-            readFile(item);
+            //readFile(item);
 
 
             //String userView = null;
@@ -117,16 +118,21 @@ public class WelcomePage implements ActionListener {
             //for some reason the userInventory.size() is double what is should be
             //so we compensate by subtracting half of it...
             //****CREATES JRADIONBUTTON FOR EACH userInventory index
-            for (int i = 0; i < userInventory.size() - userInventory.size() / 2; i++) {
+            //Integer userChoice = 0;
+
+            for (int i = 0; i < userInventory.size() ; i++) {
                 int x = 40;
                 int y = 250;
                 userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
+                userChoice ++  ;
                 radioButtons.add(userOptions);
 
                 userOptions.setBounds(x, y - (25 * i), 375, 25);
                 userOptions.setVisible(true);
                 userOptions.setFocusable(false);
                 userOptions.addActionListener(this::actionPerform);
+                userOptions.setActionCommand(userOptions.getName());
+                addToCart.setActionCommand(userOptions.getName());
                 frame.add(radioButtons.get(i));
 
 
@@ -145,15 +151,29 @@ public class WelcomePage implements ActionListener {
 					userOptions.setBounds(x, y -125, 375, 25);
 				}*/
                 //userOptions.setBounds( x, 400, 375, 25);
+
+
             }
 
+
+
+
             //TEST CODE TO SEE IF ARRAY IS PROPERPLY POPULATING
-            System.out.println(userInventory + " Test code to see if array is properly pupulating for menu, also notice the third " +
-                    "integer of nike-shirt red. This is the prior qty before added to cart");
+            System.out.println(userInventory.toString() + "\n" + "PAY ATTENTION TO 4th data member, aka the first Integer. " +
+                    "This is a reflection of the quantitiy in store record BEFORE you 'add to cart' ");
+
+
+
+
 
             //Test code to see radionButtons<> elements
            // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
             //System.out.println();
+
+
+
+
+
 
             //Add to cart button
             addToCart.setBounds(50, 500, 175, 25);
@@ -161,6 +181,8 @@ public class WelcomePage implements ActionListener {
             addToCart.setFocusable(false);
             addToCart.addActionListener(this::actionPerform);
             addToCart.addActionListener(this::addToCartAction);
+            addToCart.addActionListener(this::radioButtonValue);
+            addToCart.setActionCommand(radioButtons.get(userChoice).getText());
 
             //ViewCart Button
             viewCart.setBounds(225, 500, 175, 25);
@@ -218,6 +240,9 @@ public class WelcomePage implements ActionListener {
                             JOptionPane.YES_NO_OPTION,
                             JOptionPane.INFORMATION_MESSAGE, null,
                             new String[]{"no", "yes"}, null);
+            if (JOptionPane.YES_OPTION == 0){
+                //
+            }
 
         }
     }
@@ -250,12 +275,21 @@ public class WelcomePage implements ActionListener {
 
         if (e.getSource() == addToCart) {
 
-           int qtyRemoved = userInventory.get(0).getQty()-1;
+            //Create variables for what to do to items Qty and Sales
+           int qtyRemoved = userInventory.get(userChoice).getQty()-1;
+           int saleAdded = userInventory.get(userChoice).getSales() + 1;
 
-           userInventory.get(0).setQty(qtyRemoved);
+           //Set/Change the values of the QTY and SALES
+            userInventory.get(userChoice).setQty(qtyRemoved);
+            userInventory.get(userChoice).setSales(saleAdded);
 
-            System.out.println((userInventory.toString()+  "Test code to check updated quantity of hardcoded NIKE-SHIRT is NOT currently updating other objects quantity as unsure how to " +
-                    "get index of userInventory to properly relate to user Selected radioButton"));
+            System.out.println((
+                    userInventory.toString() + "\n" +
+                    "PAY ATTENTION TO 4th data member, aka the first Integer for QTY." + "\n" +
+                            "PAY ATTENTION to 5th data member, aka the last number for SALES " + "\n" +
+                    "This is a reflection of the quantitiy in store record AFTER you 'add to cart'" +
+                            "Including: adding to SALES, & subcracting from QTY respectively"
+            ));
 
             /**
              * to be used for adding cart to arrayList and keeping track of all the customers choices.
@@ -266,6 +300,24 @@ public class WelcomePage implements ActionListener {
         }
 
     }
+
+
+
+
+
+
+
+    public void radioButtonValue(ActionEvent e) {
+        if (e.getSource() == addToCart) {
+
+            System.out.println(
+                    "\n" +
+                    "Selected value of radio button = " + e.getActionCommand());
+        }
+    }
+
+
+
 
     //****bad code that didnt work right the first time****** ...what did you learn?//
     /*

@@ -44,7 +44,10 @@ public class Driver_Store_TW
  *
  * 3) Periodic updates and Concerns still to be adressed with current Part of Project
  * **********************************************************************************************
+ *
+ *
  *                    Tyler Wallace Store Pt.4 Wed/Nov 18 2020
+ *                  *********************************************
  *!! In order to see menu populate from array !!
  * LOG INTO:
  * username: user
@@ -53,12 +56,21 @@ public class Driver_Store_TW
  *
  *
  *                    Tyler Wallace Store pt.5 Thur/nov 19 2020
+ *                  *********************************************
  * !! The 'add to cart' button demonstrates updating qty of object.
  * Currently this only works for NIKE-SHIRT as it is hardcoded to update userInventory[0]
  * Reguardless of which option added to cart.
  * need to find way to pass value of selected radio button to the actionEvent "AddToCartAction"
  * So that it knows which item to 1( multiplied by however many user adds to cart) from qty.
  *
+ *
+ *				Update @ 6:49pm ---
+ * The button correctly reads the value of the selected element.
+ * Currently, ONLY WORKS FOR ONE SELECTION NOT MULTIPLE AT A TIME.
+ * Added ability to subtract from qty and add to sales respectively.
+ *
+ *TODO: add ArrayList to keep track of customers cart, maybe add an updating variable in frame to denote total number of items in cart.
+ * look to next section
  *
  *
  *
