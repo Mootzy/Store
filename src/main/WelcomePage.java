@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.awt.*;
 
+@SuppressWarnings("ALL")
 public class WelcomePage implements ActionListener {
 
     //JRadioButton test = new JRadioButton(userInventory.get(0).toUserString());
@@ -33,6 +34,7 @@ public class WelcomePage implements ActionListener {
     final JTextArea shopMenu = new JTextArea();
     final JTextArea custWelcomeTxt = new JTextArea("Welcome Valued Customer!");
     final JTextArea userPortalBanner = new JTextArea("Our Current Selection: " + "\n");
+    final JTextArea warning = new JTextArea("Look to the console in your IDE for updated qty, after 'add to cart' button...");
 
     //ADMIN selectbutton to pick new inventory .txt fild to upload
     final JButton selectButton = new JButton("Select");
@@ -45,9 +47,9 @@ public class WelcomePage implements ActionListener {
     final ArrayList<Item> userInventory = new ArrayList<>();
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
 
-    Integer userChoice = -1;
 
-    //ArrayList<Item> userInventory = new ArrayList<>();
+    //Used to find value of radio Button Selection from USER
+    Integer userChoice = -1;
 
     WelcomePage(String userID) {
 
@@ -62,7 +64,6 @@ public class WelcomePage implements ActionListener {
         itemList.setWrapStyleWord(true);
         itemList.setLineWrap(true);
         itemList.setBackground(new Color(frame.getBackground().getRGB(), true));
-        /* itemList.setText ( "test" ); */
 
 
         //code for if on ADMIN Welcome-Page build JFRAME
@@ -114,25 +115,35 @@ public class WelcomePage implements ActionListener {
             System.out.println(userInventory.size() + " here i am the size of userInventory");
 
 
-            //This is a very BAD for-loop
-            //for some reason the userInventory.size() is double what is should be
-            //so we compensate by subtracting half of it...
-            //****CREATES JRADIONBUTTON FOR EACH userInventory index
-            //Integer userChoice = 0;
+
+            //****CREATES JRADIONBUTTON FOR EACH userInventory index, increments userChoice to associate a numerical value with radioButton
+
 
             for (int i = 0; i < userInventory.size() ; i++) {
+                //x = width, y = height
                 int x = 40;
                 int y = 250;
+
+                //Create new RadioButton with the reduced toString ' iteminfo'
                 userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
+
+                //Used to assign numerical value to each new JRadioButton
                 userChoice ++  ;
+
+                //Add new JRadioButton to the ArrayList<JRadioButton> radioButtons
                 radioButtons.add(userOptions);
 
+                //Create bounds && conditions for the new JRadioButton...Pretty proud of the forumla to 'stack' the buttons uniformly.
                 userOptions.setBounds(x, y - (25 * i), 375, 25);
                 userOptions.setVisible(true);
                 userOptions.setFocusable(false);
                 userOptions.addActionListener(this::actionPerform);
                 userOptions.setActionCommand(userOptions.getName());
+
+                //When the 'addToCart' button is selected the actionCommand returned == the name of the button i.e ' Nike-shirt Red 9.99$"
                 addToCart.setActionCommand(userOptions.getName());
+
+                //Add to the JFrame the JRadioButton at index [i] of the ArrayList radioButtons
                 frame.add(radioButtons.get(i));
 
 
@@ -162,18 +173,9 @@ public class WelcomePage implements ActionListener {
             System.out.println(userInventory.toString() + "\n" + "PAY ATTENTION TO 4th data member, aka the first Integer. " +
                     "This is a reflection of the quantitiy in store record BEFORE you 'add to cart' ");
 
-
-
-
-
             //Test code to see radionButtons<> elements
            // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
             //System.out.println();
-
-
-
-
-
 
             //Add to cart button
             addToCart.setBounds(50, 500, 175, 25);
@@ -198,6 +200,14 @@ public class WelcomePage implements ActionListener {
             custWelcomeTxt.setLineWrap(true);
             custWelcomeTxt.setBackground(new Color(frame.getBackground().getRGB(), true));
 
+            //Warning to check console for updated qty after addToCart buttpn event
+            warning.setFont(new Font(null, Font.BOLD, 10));
+            warning.setEditable(false);
+            warning.setWrapStyleWord(true);
+            warning.setLineWrap(true);
+            warning.setBackground(new Color(frame.getBackground().getRGB(), true));
+            warning.setBounds(50, 550, 600, 25);
+
             //Create Banner " Our Current Selection:"
             userPortalBanner.setBounds(50, 115, 500, 50);
             userPortalBanner.setFont(new Font(null, Font.BOLD, 25));
@@ -220,29 +230,24 @@ public class WelcomePage implements ActionListener {
             frame.setVisible(true);
             frame.setIconImage(
                     Toolkit.getDefaultToolkit().getImage("C:\\Users\\tyler\\Desktop\\Photos-new-icon.png"));
+            frame.add(warning);
         }
     }
 
 
-    /**
-     * not yet completed for addToCart button. ****USERS WELCOME-PAGE****
-     *
-     * @param a
-     **/
+   //Adds actionEvent to addToCart Button... stil need to make 'add another item' prompt function properly
     public void actionPerform(ActionEvent a) {
         if (a.getSource() == addToCart) {
 
-            int returnVal =
-                    JOptionPane.showOptionDialog(
-                            null,
-                            "Add Another Item?",
-                            "Add to Cart",
-                            JOptionPane.YES_NO_OPTION,
-                            JOptionPane.INFORMATION_MESSAGE, null,
-                            new String[]{"no", "yes"}, null);
-            if (JOptionPane.YES_OPTION == 0){
-                //
-            }
+            JOptionPane.showOptionDialog(
+                    null,
+                    "Add Another Item?",
+                    "Add to Cart",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null,
+                    new String[]{"no", "yes"}, null);
+
+            //TODO put code here that adds the current selection to an arrayList 'cart' inorder to keep track of users prior additions.
 
         }
     }
@@ -252,7 +257,6 @@ public class WelcomePage implements ActionListener {
      *
      * @param e
      */
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == selectButton) {
@@ -271,6 +275,10 @@ public class WelcomePage implements ActionListener {
         }
     }
 
+    /**
+     * Create ActionEvent for when addToCart JButton is selected... takes value of selected JRadioButton, subtracts 1 from QTY of selected item, adds 1 to SALES of selected item.
+     * @param e
+     */
     public void addToCartAction(ActionEvent e) {
 
         if (e.getSource() == addToCart) {
@@ -301,11 +309,10 @@ public class WelcomePage implements ActionListener {
 
     }
 
-
-
-
-
-
+    /**
+     * Test ActionEvent that relays the value of the selected JRadioButton... initially used for bugTracking.
+     * @param e
+     */
 
     public void radioButtonValue(ActionEvent e) {
         if (e.getSource() == addToCart) {
@@ -315,8 +322,6 @@ public class WelcomePage implements ActionListener {
                     "Selected value of radio button = " + e.getActionCommand());
         }
     }
-
-
 
 
     //****bad code that didnt work right the first time****** ...what did you learn?//
@@ -330,15 +335,18 @@ public class WelcomePage implements ActionListener {
      */
 
 
-    //Method only presents Cost, Color and Item Name for User
+    /**
+     * Method to read ADMIN's 'uploaded' text file and populate arrayList for menu
+     * Method only presents Cost, Color and Item Name for User
+     * @param file
+     * @return
+     */
     public String readFile(File file) {
         String itemData = null;
         JTextArea ta = new JTextArea();
         String customerItem = "";
 
         try {
-            // File itemList = new File ( "Item.txt" );
-
             Scanner reader = new Scanner(file);
 
             while (reader.hasNextLine()) {
@@ -392,9 +400,10 @@ public class WelcomePage implements ActionListener {
     }
 
 
-    public void removeFromQty(ArrayList<Item> userInventory, int elementToRemove) {
 
-    }
+
+
+
 
 
 }

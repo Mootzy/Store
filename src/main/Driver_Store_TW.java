@@ -69,7 +69,8 @@ public class Driver_Store_TW
  * Currently, ONLY WORKS FOR ONE SELECTION NOT MULTIPLE AT A TIME.
  * Added ability to subtract from qty and add to sales respectively.
  *
- *TODO: add ArrayList to keep track of customers cart, maybe add an updating variable in frame to denote total number of items in cart.
+ *TODO: add ArrayList to keep track of customers cart,
+ * maybe add an updating variable in frame to denote total number of items in cart.
  * look to next section
  *
  *
