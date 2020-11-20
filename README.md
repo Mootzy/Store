@@ -4,7 +4,8 @@ admin/admin = (utilize importing text document to fill store inventory)
 user/user = utilize 'add to cart' and see previously imported inventory be impacted by customers decision. 
 
 
-admin credentials = admin | admin "\n"
+admin credentials = admin | admin 
+
 user credentials = user | user
 
 load text file from fileChooser.
