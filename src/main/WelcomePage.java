@@ -49,7 +49,7 @@ public class WelcomePage implements ActionListener {
 
 
     //Used to find value of radio Button Selection from USER
-    Integer userChoice = -1;
+    Integer userChoice = 0;
 
     WelcomePage(String userID) {
 
@@ -128,7 +128,7 @@ public class WelcomePage implements ActionListener {
                 userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
 
                 //Used to assign numerical value to each new JRadioButton
-                userChoice ++  ;
+                userChoice += i -1  ;
 
                 //Add new JRadioButton to the ArrayList<JRadioButton> radioButtons
                 radioButtons.add(userOptions);
