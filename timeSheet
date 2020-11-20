@@ -1,0 +1,22 @@
+pt 1. 
+expected - 2hrs
+total - 4hours
+
+pt2. 
+expected - 3 hrs
+total - ~~4hrs
+
+pt3.
+expected - 2hrs
+total - 1.5hrs but broke proper GUI display
+
+
+pt 4.
+Expected - 3hrs
+Total - 3hrs
+
+pt 5.
+Expected - 5hrs
+Total - 6~7 hours
+(actual time spent coding ~= 1hr)
+(time debugging/brainstorming ~= 5hrs)
