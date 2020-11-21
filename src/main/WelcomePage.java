@@ -82,15 +82,13 @@ public class WelcomePage implements ActionListener {
     Double cost = 0.0;
 
 
-
-
     String oldContent = "";
-
-
 
     WelcomePage(String userID) {
 
         //BufferedReader reader = new BufferedReader(new FileReader(item));
+
+
 
         welcomeLabel.setBounds(175, 0, 200, 35);
         welcomeLabel.setFont(new Font(null, Font.PLAIN, 25));
@@ -114,21 +112,31 @@ public class WelcomePage implements ActionListener {
         if (userID.equalsIgnoreCase("admin")) {
 
 
+
+            String [][] inventoryTableData = new String[userInventory.size()][];
+            //String[][] inventoryTableData = userInventory.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
+
+            for(int i = 0; i < userInventory.size(); i++){
+                //ArrayList<String> row = new ArrayList<>();
+                    inventoryTableData[i] = userInventory.toArray(new String[userInventory.size()]);
+            };
+
             selectButton.setBounds(200, 275, 75, 25);
             selectButton.setVisible(true);
             selectButton.setFocusable(false);
-            // this took 2 hours to figure out you have to also add actionListener...
             selectButton.addActionListener(this);
-
-
 
             managerViewButton.setBounds(40, 475, 125, 25);
             managerViewButton.setVisible(true);
             managerViewButton.setFocusable(false);
-            //managerView.addActionListener(this::managerViewAction);
+            managerViewButton.addActionListener(this::managerViewAction);
 
+            JTable inventoryTable = new JTable(inventoryTableData, columns);
+            inventoryTable.setVisible(true);
+            inventoryTable.setBackground(new Color(frame.getBackground().getRGB(), true));
+            inventoryTable.setBounds(50,400,75,75);
 
-
+            //Create Inventory Preview
             inventoryPreview.setText(readFile(item));
             inventoryPreview.setBounds(50,400,500,75);
             inventoryPreview.setEditable(false);
@@ -136,14 +144,14 @@ public class WelcomePage implements ActionListener {
             inventoryPreview.setBackground(new Color(frame.getBackground().getRGB(), true));
             inventoryPreview.setVisible(true);
 
-
+            //Create Banner for inv. preview
             inventoryPreviewBanner.setBounds(50,375,500,25);
             inventoryPreviewBanner.setEditable(false);
             inventoryPreviewBanner.setFont(new Font(null, Font.BOLD, 15));
             inventoryPreviewBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
             inventoryPreviewBanner.setVisible(true);
 
-
+            //Create frame for admin side of portal
             frame.add(logout);
             frame.add(inventoryPreviewBanner);
             frame.add(inventoryPreview);
@@ -350,6 +358,20 @@ public class WelcomePage implements ActionListener {
         }
     }
 
+    public void managerViewAction(ActionEvent e){
+        if (e.getSource()== managerViewButton){
+
+            JFrame managerViewFrame = new JFrame();
+            managerViewFrame.setTitle("Checkout");
+            managerViewFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            managerViewFrame.setVisible(true);
+            managerViewFrame.setBounds(250,250, 350, 550);
+            managerViewFrame.setBounds(0,25,200,50);
+           // managerViewFrame.add(cartPrev);
+            managerViewFrame.add(totalPreview);
+
+        }
+    }
 
     /**
      * Action listener for selectButton, opens fileChooser dialog inorder to import txt file. ****ADMINS WELCOMEPAGE****
