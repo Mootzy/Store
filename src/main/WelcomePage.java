@@ -80,6 +80,8 @@ public class WelcomePage implements ActionListener {
     //Track users total
     Double ongoingTotal = 0.0;
     Double cost = 0.0;
+    Double dailyProfity = 0.0;
+
 
 
     String oldContent = "";
@@ -131,10 +133,10 @@ public class WelcomePage implements ActionListener {
             managerViewButton.setFocusable(false);
             managerViewButton.addActionListener(this::managerViewAction);
 
-            JTable inventoryTable = new JTable(inventoryTableData, columns);
+            /*JTable inventoryTable = new JTable(inventoryTableData, columns);
             inventoryTable.setVisible(true);
             inventoryTable.setBackground(new Color(frame.getBackground().getRGB(), true));
-            inventoryTable.setBounds(50,400,75,75);
+            inventoryTable.setBounds(50,400,75,75);*/
 
             //Create Inventory Preview
             inventoryPreview.setText(readFile(item));
@@ -361,14 +363,28 @@ public class WelcomePage implements ActionListener {
     public void managerViewAction(ActionEvent e){
         if (e.getSource()== managerViewButton){
 
+           double totalProfit = 0.0;
+           totalProfit += dailyProfity;
+
             JFrame managerViewFrame = new JFrame();
-            managerViewFrame.setTitle("Checkout");
+
+            JTextArea profit = new JTextArea("Daily Profit: " + String.valueOf((totalProfit)));
+            profit.setVisible(true);
+            profit.setEditable(false);
+            profit.setBounds(50,25,100,25);
+            profit.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
+
+            inventoryPreview.setBounds(0,150,100,150);
+            inventoryPreview.setVisible(true);
+            inventoryPreview.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
+
+
+            managerViewFrame.add(profit);
+            managerViewFrame.add(inventoryPreview);
+            managerViewFrame.setTitle("Manager Insight");
             managerViewFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             managerViewFrame.setVisible(true);
             managerViewFrame.setBounds(250,250, 350, 550);
-            managerViewFrame.setBounds(0,25,200,50);
-           // managerViewFrame.add(cartPrev);
-            managerViewFrame.add(totalPreview);
 
         }
     }
@@ -467,16 +483,6 @@ public class WelcomePage implements ActionListener {
 
     }
 
-    //****bad code that didnt work right the first time****** ...what did you learn?//
-    /*
-     * public void ReadFileChooserOpenedFiled( ActionEvent e ) throws IOException { File file = fc.getSelectedFile ( );
-     * String Data = null;
-     *
-     * Scanner reader = new Scanner ( file ); while ( reader.hasNextLine ( ) ) { Data = reader.nextLine ( );
-     *
-     * System.out.println ( Data ); } reader.close ( ); }
-     */
-
     /**
      * Method to read ADMIN's 'uploaded' text file and populate arrayList for menu
      * Method only presents Cost, Color and Item Name for User
@@ -485,14 +491,12 @@ public class WelcomePage implements ActionListener {
      */
     public String readFile(File file) {
         String itemData = null;
-        //JTextArea ta = new JTextArea();
         String customerItem = "";
 
         try {
             Scanner reader = new Scanner(file);
 
             while (reader.hasNextLine()) {
-
 
                 String name = reader.next() + " ";
                 String color = reader.next() + " ";
@@ -511,30 +515,18 @@ public class WelcomePage implements ActionListener {
                 if(userInventory != null) {
 
                     userInventory.add(newItem);
-                    //customerItem += newItem.itemInfo(newItem);
                     customerItem += newItem.toString() + "\n";
                 }
                 //code to debug only printing cost color and name... working in console
                // System.out.println(newItem.itemInfo(newItem) + " here i am");
 
-
-
-                //customerItem += newItem.itemInfo(newItem);
                 if (userInventory == null){
 
                     Collections.fill(userInventory,newItem);
 
                 }
-
-                //itemData = userInventory.toString() + "\n";
                 itemData = newItem.itemInfo(newItem);
                 itemData += reader.nextLine() + " \n";
-
-
-               // System.out.println(itemData);
-                // ta.setText(itemData + "\n");
-
-
             }
             reader.close();
 
@@ -551,11 +543,10 @@ public class WelcomePage implements ActionListener {
             e.printStackTrace();
         }
         return customerItem;
-
     }
+
     public String readFileDataUserNeeds(File file) {
         String itemData = null;
-        JTextArea ta = new JTextArea();
         String customerItem = "";
 
         try {
@@ -599,9 +590,6 @@ public class WelcomePage implements ActionListener {
                 itemData += reader.nextLine() + " \n";
 
 
-                // System.out.println(itemData);
-                ta.setText(itemData + "\n");
-
 
             }
             reader.close();
@@ -621,11 +609,13 @@ public class WelcomePage implements ActionListener {
         return customerItem;
 
     }
+
     public void setAddToCart(ActionEvent e){
         if (e.getSource() == addToCart){
 
         }
     }
+
     public void viewCartAction(ActionEvent e){
         if (e.getSource() == viewCart){
             JFrame checkout = new JFrame();
