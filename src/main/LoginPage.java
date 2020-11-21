@@ -123,33 +123,6 @@ public class LoginPage implements ActionListener, KeyListener
 		}
 	}
 
-	//Bad code unnessecary actionEvents
-	/*public void actionPerformeduser(ActionEvent e){
-
-	}
-
-	public void keyAction( KeyEvent e )
-	{
-		if ( e.getKeyCode ( ) == KeyEvent.VK_ENTER )
-		{
-			String userID = unField.getText ( );
-			String password = String.valueOf ( pwField.getPassword ( ) );
-
-			if ( loginInfo.containsKey ( userID ) )
-			{
-				if ( loginInfo.get ( userID ).equals ( password ) )
-				{
-					messageLabel.setForeground ( Color.green );
-					messageLabel.setText ( "Successful" );
-					messageLabel.setSize ( 125, 125 );
-					frame.dispose ( );
-					new WelcomePage ( userID );
-
-				}
-			}
-		}
-	}*/
-
 	@Override
 	public void keyTyped(KeyEvent e) {
 

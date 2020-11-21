@@ -1,4 +1,6 @@
 package main;
+import jdk.dynalink.beans.StaticClass;
+
 import javax.swing.*;
 
 
@@ -14,13 +16,6 @@ public class Driver_Store_TW
 		
 		
 	}
-
-	
-	
-	
-	
-	
-	
 
 }
 
@@ -74,20 +69,12 @@ public class Driver_Store_TW
  * look to next section
  *
  *
+ *						 Tyler Wallace pt 6 Fri/nov 20, 2020
+ *						*************************************
  *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
- *
+ * Currently only Grey Joggers is updating for any usage via GUI. Reguardless of which option you select,
+ * Grey joggers will be calculated for total, will be updated for the cart preview, etc....
+ * 22
  *
  *
  *

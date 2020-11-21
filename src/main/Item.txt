@@ -1,4 +1,4 @@
 Nike Shirt red 19.99 100 50
 Running Shoes black 49.99 20 10
 joggers grey 29.99 20 10
-socks white 9.99 50 25
+socks white 9.99 0 25
