@@ -3,7 +3,6 @@ package main;
 import java.awt.event.*;
 import javax.swing.*;
 import java.io.*;
-import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -39,6 +38,8 @@ public class WelcomePage implements ActionListener {
     final JTextArea cartBanner = new JTextArea("cart preview");
     final JTextArea totalPreview = new JTextArea();
     final JTextArea totalPreviewBanner = new JTextArea("total: ");
+    final JTextArea inventoryPreview = new JTextArea();
+    final JTextArea inventoryPreviewBanner = new JTextArea("Inventory Preview");
     //ADMIN selectbutton to pick new inventory .txt fild to upload
     final JButton selectButton = new JButton("Select");
 
@@ -46,7 +47,9 @@ public class WelcomePage implements ActionListener {
     final JButton viewCart = new JButton(("view cart/checkout"));
     final JButton addToCart = new JButton("add to cart");
     final JButton logout = new JButton("logout");
+    final JButton managerViewButton = new JButton("Insight");
 
+    //Alert user when out of Qty for object
     final JOptionPane outOfQty = new JOptionPane();
 
     //Create list for user to see what
@@ -54,12 +57,34 @@ public class WelcomePage implements ActionListener {
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
     final ArrayList<String> userCart = new ArrayList<>();
 
+
+    final JTable inventoryTable = new JTable();
+
+    //columns for Table
+    String [] columns = new String[]{
+
+            "Name",
+            "Color",
+            "Cost",
+            "Quantity",
+            "Sales this Month"
+    };
+
+
+
     //Used to find value of radio Button Selection from USER
+    //currently bugged... probably try using hashmap next
+    //always provides value of "Joggers" ATM
     Integer userChoice = 0;
 
+    //Track users total
     Double ongoingTotal = 0.0;
-    String oldContent = "";
     Double cost = 0.0;
+
+
+
+
+    String oldContent = "";
 
 
 
@@ -78,6 +103,13 @@ public class WelcomePage implements ActionListener {
         itemList.setLineWrap(true);
         itemList.setBackground(new Color(frame.getBackground().getRGB(), true));
 
+        logout.setBounds(185, 555, 125, 25);
+        logout.setVisible(true);
+        logout.setFocusable(false);
+        logout.addActionListener(this::logoutAction);
+        logout.addActionListener(this::radioButtonValue);
+
+
         //code for if on ADMIN Welcome-Page build JFRAME
         if (userID.equalsIgnoreCase("admin")) {
 
@@ -89,6 +121,33 @@ public class WelcomePage implements ActionListener {
             selectButton.addActionListener(this);
 
 
+
+            managerViewButton.setBounds(40, 475, 125, 25);
+            managerViewButton.setVisible(true);
+            managerViewButton.setFocusable(false);
+            //managerView.addActionListener(this::managerViewAction);
+
+
+
+            inventoryPreview.setText(readFile(item));
+            inventoryPreview.setBounds(50,400,500,75);
+            inventoryPreview.setEditable(false);
+            inventoryPreview.setFont(new Font(null, Font.TRUETYPE_FONT, 12));
+            inventoryPreview.setBackground(new Color(frame.getBackground().getRGB(), true));
+            inventoryPreview.setVisible(true);
+
+
+            inventoryPreviewBanner.setBounds(50,375,500,25);
+            inventoryPreviewBanner.setEditable(false);
+            inventoryPreviewBanner.setFont(new Font(null, Font.BOLD, 15));
+            inventoryPreviewBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
+            inventoryPreviewBanner.setVisible(true);
+
+
+            frame.add(logout);
+            frame.add(inventoryPreviewBanner);
+            frame.add(inventoryPreview);
+            frame.add(managerViewButton);
             frame.add(selectButton);
             frame.add(itemList);
             frame.setTitle("Store Inventory Portal");
@@ -367,7 +426,7 @@ public class WelcomePage implements ActionListener {
             frame.dispose();
 
             IDandPasswords idandPasswords = new IDandPasswords ( );
-          //  LoginPage loginPage = new LoginPage ( idandPasswords.getLoginInfo ( ) );
+            LoginPage loginPage = new LoginPage ( idandPasswords.getLoginInfo ( ) );
         }
     }
 
@@ -404,6 +463,76 @@ public class WelcomePage implements ActionListener {
      */
     public String readFile(File file) {
         String itemData = null;
+        //JTextArea ta = new JTextArea();
+        String customerItem = "";
+
+        try {
+            Scanner reader = new Scanner(file);
+
+            while (reader.hasNextLine()) {
+
+
+                String name = reader.next() + " ";
+                String color = reader.next() + " ";
+                cost = Double.parseDouble(reader.nextDouble() + " ");
+                //double cost = Double.valueOf(reader.next().substring(1)); ****BAD CODE NOT FINDING RIGHT DOUBLE VALUE*****
+                int qty = reader.nextInt();
+                int sales = reader.nextInt();
+
+                Item newItem = new Item(name, color, cost, qty, sales);
+                String itemInfo = newItem.getName() + " ";
+                itemInfo += newItem.getColor() + " ";
+                itemInfo += newItem.getCost() + " ";
+                itemInfo += newItem.getQty() + " ";
+                itemInfo += newItem.getSales() + "\n";
+
+                if(userInventory != null) {
+
+                    userInventory.add(newItem);
+                    //customerItem += newItem.itemInfo(newItem);
+                    customerItem += newItem.toString() + "\n";
+                }
+                //code to debug only printing cost color and name... working in console
+               // System.out.println(newItem.itemInfo(newItem) + " here i am");
+
+
+
+                //customerItem += newItem.itemInfo(newItem);
+                if (userInventory == null){
+
+                    Collections.fill(userInventory,newItem);
+
+                }
+
+                //itemData = userInventory.toString() + "\n";
+                itemData = newItem.itemInfo(newItem);
+                itemData += reader.nextLine() + " \n";
+
+
+               // System.out.println(itemData);
+                // ta.setText(itemData + "\n");
+
+
+            }
+            reader.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println(" ____________________\r\n" + "/                    \\\r\n" + "!  file not found :( !\r\n"
+                    + "!                    !\r\n" + "\\____________________/\r\n" + "         !  !\r\n"
+                    + "         !  !\r\n" + "         L_ !\r\n" + "        / _)!\r\n" + "       / /__L\r\n"
+                    + " _____/ (____)\r\n" + "        (____)\r\n" + " _____  (____)\r\n" + "      \\_(____)\r\n"
+                    + "         !  !\r\n" + "         !  !\r\n" + "         \\__/   ");
+            System.out.println(
+                    "If you're not selecting a file from this projects folder you'll have to give the absolute path:");
+            System.out.println("I.E C:\\Users\\YOUR-USER-HERE\\PATH-TO-TEXT-FILE\\YourTextFile.txt");
+
+            e.printStackTrace();
+        }
+        return customerItem;
+
+    }
+    public String readFileDataUserNeeds(File file) {
+        String itemData = null;
         JTextArea ta = new JTextArea();
         String customerItem = "";
 
@@ -432,7 +561,7 @@ public class WelcomePage implements ActionListener {
 
                 }
                 //code to debug only printing cost color and name... working in console
-               // System.out.println(newItem.itemInfo(newItem) + " here i am");
+                // System.out.println(newItem.itemInfo(newItem) + " here i am");
 
 
 
@@ -448,7 +577,7 @@ public class WelcomePage implements ActionListener {
                 itemData += reader.nextLine() + " \n";
 
 
-               // System.out.println(itemData);
+                // System.out.println(itemData);
                 ta.setText(itemData + "\n");
 
 
@@ -470,7 +599,6 @@ public class WelcomePage implements ActionListener {
         return customerItem;
 
     }
-
     public void setAddToCart(ActionEvent e){
         if (e.getSource() == addToCart){
 

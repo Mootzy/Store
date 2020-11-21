@@ -50,7 +50,7 @@ public class Item
 	@Override
 	public String toString( )
 	{
-		return name + "" + color + " " + cost + " " + qty + " " + sales;
+		return name + "" + color + " " + "$" + cost + " " + qty + " " + sales;
 	}
 
 	/**
