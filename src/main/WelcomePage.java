@@ -57,11 +57,10 @@ public class WelcomePage implements ActionListener {
     final ArrayList<JRadioButton> radioButtons = new ArrayList<>();
     final ArrayList<String> userCart = new ArrayList<>();
 
-
     final JTable inventoryTable = new JTable();
 
     //columns for Table
-    String [] columns = new String[]{
+    String[] columns = new String[]{
 
             "Name",
             "Color",
@@ -69,6 +68,8 @@ public class WelcomePage implements ActionListener {
             "Quantity",
             "Sales this Month"
     };
+
+
 
 
 
@@ -80,18 +81,13 @@ public class WelcomePage implements ActionListener {
     //Track users total
     Double ongoingTotal = 0.0;
     Double cost = 0.0;
-    Double dailyProfity = 0.0;
-
-
+    Double dailyProfit = 0.0;
 
     String oldContent = "";
 
     WelcomePage(String userID) {
 
         //BufferedReader reader = new BufferedReader(new FileReader(item));
-
-
-
         welcomeLabel.setBounds(175, 0, 200, 35);
         welcomeLabel.setFont(new Font(null, Font.PLAIN, 25));
         welcomeLabel.setText("Hello, " + userID);
@@ -109,18 +105,15 @@ public class WelcomePage implements ActionListener {
         logout.addActionListener(this::logoutAction);
         logout.addActionListener(this::radioButtonValue);
 
-
         //code for if on ADMIN Welcome-Page build JFRAME
         if (userID.equalsIgnoreCase("admin")) {
 
-
-
-            String [][] inventoryTableData = new String[userInventory.size()][];
+            String[][] inventoryTableData = new String[userInventory.size()][];
             //String[][] inventoryTableData = userInventory.stream().map(u -> u.toArray(new String[0])).toArray(String[][]::new);
 
-            for(int i = 0; i < userInventory.size(); i++){
+            for (int i = 0; i < userInventory.size(); i++) {
                 //ArrayList<String> row = new ArrayList<>();
-                    inventoryTableData[i] = userInventory.toArray(new String[userInventory.size()]);
+                inventoryTableData[i] = userInventory.toArray(new String[userInventory.size()]);
             };
 
             selectButton.setBounds(200, 275, 75, 25);
@@ -133,21 +126,16 @@ public class WelcomePage implements ActionListener {
             managerViewButton.setFocusable(false);
             managerViewButton.addActionListener(this::managerViewAction);
 
-            /*JTable inventoryTable = new JTable(inventoryTableData, columns);
-            inventoryTable.setVisible(true);
-            inventoryTable.setBackground(new Color(frame.getBackground().getRGB(), true));
-            inventoryTable.setBounds(50,400,75,75);*/
-
             //Create Inventory Preview
             inventoryPreview.setText(readFile(item));
-            inventoryPreview.setBounds(50,400,500,75);
+            inventoryPreview.setBounds(50, 400, 500, 75);
             inventoryPreview.setEditable(false);
             inventoryPreview.setFont(new Font(null, Font.TRUETYPE_FONT, 12));
             inventoryPreview.setBackground(new Color(frame.getBackground().getRGB(), true));
             inventoryPreview.setVisible(true);
 
             //Create Banner for inv. preview
-            inventoryPreviewBanner.setBounds(50,375,500,25);
+            inventoryPreviewBanner.setBounds(50, 375, 500, 25);
             inventoryPreviewBanner.setEditable(false);
             inventoryPreviewBanner.setFont(new Font(null, Font.BOLD, 15));
             inventoryPreviewBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
@@ -190,7 +178,7 @@ public class WelcomePage implements ActionListener {
             System.out.println(userInventory.size() + " here i am the size of userInventory");
 
             //****CREATES JRADIONBUTTON FOR EACH userInventory index, increments userChoice to associate a numerical value with radioButton
-            for (int i = 0; i < userInventory.size() ; i++) {
+            for (int i = 0; i < userInventory.size(); i++) {
                 //x = width, y = height
                 int x = 40;
                 int y = 250;
@@ -199,7 +187,7 @@ public class WelcomePage implements ActionListener {
                 userOptions = new JRadioButton(userInventory.get(i).itemInfo(userInventory.get(i)));
 
                 //Used to assign numerical value to each new JRadioButton
-                userChoice += i -1  ;
+                userChoice += i - 1;
 
                 //Add new JRadioButton to the ArrayList<JRadioButton> radioButtons
                 radioButtons.add(userOptions);
@@ -225,7 +213,7 @@ public class WelcomePage implements ActionListener {
                     "This is a reflection of the quantitiy in store record BEFORE you 'add to cart' ");
 
             //Test code to see radionButtons<> elements
-           // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
+            // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
             //System.out.println();
 
             //Add to cart button
@@ -276,7 +264,7 @@ public class WelcomePage implements ActionListener {
             userPortalBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
 
             //Create "Preview Cart" Banner
-            cartBanner.setBounds(50,375, 500, 25);
+            cartBanner.setBounds(50, 375, 500, 25);
             cartBanner.setEditable(false);
             cartBanner.setWrapStyleWord(true);
             cartBanner.setLineWrap(true);
@@ -285,14 +273,14 @@ public class WelcomePage implements ActionListener {
             cartBanner.setBackground(new Color(frame.getBackground().getRGB(), true));
 
             //Create Cart Preview
-            cartPrev.setBounds(50,425,500,25);
+            cartPrev.setBounds(50, 425, 500, 25);
             cartPrev.setFont(new Font(null, Font.HANGING_BASELINE, 10));
             cartPrev.setVisible(true);
             cartPrev.setEditable(false);
             cartPrev.setBackground(new Color(frame.getBackground().getRGB(), true));
 
             //Create Total Preview
-            totalPreview.setBounds(50,475,500,25);
+            totalPreview.setBounds(50, 475, 500, 25);
             totalPreview.setFont(new Font(null, Font.HANGING_BASELINE, 10));
             totalPreview.setVisible(true);
             totalPreview.setEditable(false);
@@ -300,12 +288,12 @@ public class WelcomePage implements ActionListener {
 
             //code to make default button on userPortal addToCart, until they have something in their cart then change it to "checkout"
             //sneaky marketing ploys
-            if(userCart.isEmpty()) {
+            if (userCart.isEmpty()) {
                 frame.getRootPane().setDefaultButton(addToCart);
                 addToCart.requestFocus();
             }
 
-            if(userCart.equals(null)){
+            if (userCart.equals(null)) {
 
                 addToCart.update(addToCart.getGraphics());
                 frame.getRootPane().setDefaultButton(viewCart);
@@ -324,7 +312,7 @@ public class WelcomePage implements ActionListener {
             frame.setTitle("Customer Portal");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.add(welcomeLabel);
-            frame.setLocation(525,200);
+            frame.setLocation(525, 200);
             frame.setSize(500, 620);
             frame.setLayout(null);
             frame.setVisible(true);
@@ -334,16 +322,10 @@ public class WelcomePage implements ActionListener {
             System.out.println(radioButtons.get(0).getText());
 
 
-
         }
     }
 
-
-
-
-
-
-   //Adds actionEvent to addToCart Button... stil need to make 'add another item' prompt function properly
+    //Adds actionEvent to addToCart Button... stil need to make 'add another item' prompt function properly
     public void actionPerform(ActionEvent a) {
         if (a.getSource() == addToCart) {
 
@@ -360,31 +342,31 @@ public class WelcomePage implements ActionListener {
         }
     }
 
-    public void managerViewAction(ActionEvent e){
-        if (e.getSource()== managerViewButton){
+    public void managerViewAction(ActionEvent e) {
+        if (e.getSource() == managerViewButton) {
 
-           double totalProfit = 0.0;
-           totalProfit += dailyProfity;
+            double totalProfit = 0.0;
+            totalProfit += dailyProfit;
 
             JFrame managerViewFrame = new JFrame();
 
-            JTextArea profit = new JTextArea("Daily Profit: " + String.valueOf((totalProfit)));
+            JTextArea profit = new JTextArea("Daily Profit: $" + String.valueOf((totalProfit)));
             profit.setVisible(true);
             profit.setEditable(false);
-            profit.setBounds(50,25,100,25);
+            profit.setBounds(0, 150, 200, 25);
             profit.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
+            profit.setFocusable(false);
 
-            inventoryPreview.setBounds(0,150,100,150);
+            inventoryPreview.setBounds(0, 150, 100, 150);
             inventoryPreview.setVisible(true);
             inventoryPreview.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
-
 
             managerViewFrame.add(profit);
             managerViewFrame.add(inventoryPreview);
             managerViewFrame.setTitle("Manager Insight");
-            managerViewFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            managerViewFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             managerViewFrame.setVisible(true);
-            managerViewFrame.setBounds(250,250, 350, 550);
+            managerViewFrame.setBounds(250, 250, 350, 550);
 
         }
     }
@@ -406,26 +388,25 @@ public class WelcomePage implements ActionListener {
                 File file = fc.getSelectedFile();
                 frame.dispose();
                 new InventoryPage(file);
-
             }
-
         }
     }
 
     /**
      * Create ActionEvent for when addToCart JButton is selected... takes value of selected JRadioButton, subtracts 1 from QTY of selected item, adds 1 to SALES of selected item.
+     *
      * @param e
      */
     public void addToCartAction(ActionEvent e) {
 
         if (e.getSource() == addToCart) {
             //  Create variables for what to do to items Qty and Sales
-           int qtyRemoved = userInventory.get(userChoice).getQty()-1;
-           int saleAdded = userInventory.get(userChoice).getSales() + 1;
+            int qtyRemoved = userInventory.get(userChoice).getQty() - 1;
+            int saleAdded = userInventory.get(userChoice).getSales() + 1;
 
-           if(userInventory.get(userChoice).getQty() == 0){
+            if (userInventory.get(userChoice).getQty() == 0) {
 
-           }
+            }
 
             //  Set/Change the values of the QTY and SALES
             userInventory.get(userChoice).setQty(qtyRemoved);
@@ -433,20 +414,21 @@ public class WelcomePage implements ActionListener {
 
             System.out.println((
                     userInventory.toString() + "\n" +
-                    "PAY ATTENTION TO 4th data member, aka the first Integer for QTY." + "\n" +
+                            "PAY ATTENTION TO 4th data member, aka the first Integer for QTY." + "\n" +
                             "PAY ATTENTION to 5th data member, aka the last number for SALES " + "\n" +
-                    "This is a reflection of the quantitiy in store record AFTER you 'add to cart'" +
+                            "This is a reflection of the quantitiy in store record AFTER you 'add to cart'" +
                             "Including: adding to SALES, & subcracting from QTY respectively"
             ));
 
             /**
              * to be used for adding cart to arrayList and keeping track of all the customers choices.
              */
-            userCart.equals(userCart.add(userInventory.get(userChoice).getName() +  userInventory.get(userChoice).getCost()) + "\n");
-            ongoingTotal += ((Double) userInventory.get(userChoice).getCost()) ;
+            userCart.equals(userCart.add(userInventory.get(userChoice).getName() + userInventory.get(userChoice).getCost()) + "\n");
+            ongoingTotal += ((Double) userInventory.get(userChoice).getCost());
             //ArrayList<Item> cart = new ArrayList<>();
-            cartPrev.setText(userCart.toString().replace("[", "").replace("]",""));
+            cartPrev.setText(userCart.toString().replace("[", "").replace("]", ""));
             cartPrev.update(cartPrev.getGraphics());
+
 
             totalPreview.setText("total: $" + ongoingTotal.toString());
             totalPreview.update(totalPreview.getGraphics());
@@ -458,18 +440,19 @@ public class WelcomePage implements ActionListener {
 
     }
 
-    public void logoutAction(ActionEvent e){
-        if (e.getSource()==logout)
-        {
+    public void logoutAction(ActionEvent e) {
+        if (e.getSource() == logout) {
             frame.dispose();
 
-            IDandPasswords idandPasswords = new IDandPasswords ( );
-            LoginPage loginPage = new LoginPage ( idandPasswords.getLoginInfo ( ) );
+
+            IDandPasswords idandPasswords = new IDandPasswords();
+            LoginPage loginPage = new LoginPage(idandPasswords.getLoginInfo());
         }
     }
 
     /**
      * Test ActionEvent that relays the value of the selected JRadioButton... initially used for bugTracking.
+     *
      * @param e
      */
 
@@ -486,6 +469,7 @@ public class WelcomePage implements ActionListener {
     /**
      * Method to read ADMIN's 'uploaded' text file and populate arrayList for menu
      * Method only presents Cost, Color and Item Name for User
+     *
      * @param file
      * @return
      */
@@ -512,17 +496,17 @@ public class WelcomePage implements ActionListener {
                 itemInfo += newItem.getQty() + " ";
                 itemInfo += newItem.getSales() + "\n";
 
-                if(userInventory != null) {
+                if (userInventory != null) {
 
                     userInventory.add(newItem);
                     customerItem += newItem.toString() + "\n";
                 }
                 //code to debug only printing cost color and name... working in console
-               // System.out.println(newItem.itemInfo(newItem) + " here i am");
+                // System.out.println(newItem.itemInfo(newItem) + " here i am");
 
-                if (userInventory == null){
+                if (userInventory == null) {
 
-                    Collections.fill(userInventory,newItem);
+                    Collections.fill(userInventory, newItem);
 
                 }
                 itemData = newItem.itemInfo(newItem);
@@ -554,11 +538,9 @@ public class WelcomePage implements ActionListener {
 
             while (reader.hasNextLine()) {
 
-                //updating readFile Method to-DO!!!!
                 String name = reader.next() + " ";
                 String color = reader.next() + " ";
                 cost = Double.parseDouble(reader.nextDouble() + " ");
-                //double cost = Double.valueOf(reader.next().substring(1)); ****BAD CODE NOT FINDING RIGHT DOUBLE VALUE*****
                 int qty = reader.nextInt();
                 int sales = reader.nextInt();
 
@@ -567,28 +549,18 @@ public class WelcomePage implements ActionListener {
                 itemInfo += newItem.getColor() + " ";
                 itemInfo += newItem.getCost() + " ";
 
-                if(userInventory != null) {
+                if (userInventory != null) {
 
                     userInventory.add(newItem);
                     customerItem += newItem.itemInfo(newItem);
-
                 }
-                //code to debug only printing cost color and name... working in console
-                // System.out.println(newItem.itemInfo(newItem) + " here i am");
-
-
-
                 //customerItem += newItem.itemInfo(newItem);
-                if (userInventory == null){
+                if (userInventory == null) {
 
-                    Collections.fill(userInventory,newItem);
-
+                    Collections.fill(userInventory, newItem);
                 }
-
-                //itemData = userInventory.toString() + "\n";
                 itemData = newItem.itemInfo(newItem);
                 itemData += reader.nextLine() + " \n";
-
 
 
             }
@@ -607,38 +579,41 @@ public class WelcomePage implements ActionListener {
             e.printStackTrace();
         }
         return customerItem;
-
     }
 
-    public void setAddToCart(ActionEvent e){
-        if (e.getSource() == addToCart){
+    public void setAddToCart(ActionEvent e) {
+        if (e.getSource() == addToCart) {
 
         }
     }
 
-    public void viewCartAction(ActionEvent e){
-        if (e.getSource() == viewCart){
+    public void viewCartAction(ActionEvent e) {
+        if (e.getSource() == viewCart) {
             JFrame checkout = new JFrame();
+            JButton pay = new JButton("pay now");
+            pay.setBounds(50, 100, 50, 25);
+            pay.setVisible(true);
+
+            checkout.add(pay);
             checkout.setTitle("Checkout");
-            checkout.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            checkout.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
             checkout.setVisible(true);
-            checkout.setBounds(250,250, 250, 250);
-            cartPrev.setBounds(0,25,200,50);
+            checkout.setBounds(250, 250, 250, 250);
+            cartPrev.setBounds(0, 25, 200, 50);
             checkout.add(cartPrev);
             checkout.add(totalPreview);
 
         }
     }
 
-    public void editFile(File file, String filePath, String oldString, String newString){
+    public void editFile(File file, String filePath, String oldString, String newString) {
+        String oldContent = "";
+        String newContent = "";
+        Scanner reader = null;
+        FileWriter writer = null;
+        String newLine = null;
 
-    String oldContent = "";
-    String newContent = "";
-    Scanner reader = null;
-    FileWriter writer = null;
-    String newLine = null;
-
-    String totalEdit =  ongoingTotal.toString();
+        String totalEdit = ongoingTotal.toString();
 
 
         try {
@@ -646,8 +621,7 @@ public class WelcomePage implements ActionListener {
             BufferedWriter writerOut = new BufferedWriter(writer);
             reader = new Scanner(file);
             //BufferedReader readerOut = new BufferedReader(reader);
-
-           // String dataToReplace = ((String) reader.nextInt()) + reader.nextInt();
+            // String dataToReplace = ((String) reader.nextInt()) + reader.nextInt();
 
             while (reader.hasNextLine()) {
 
@@ -655,14 +629,12 @@ public class WelcomePage implements ActionListener {
 
                 int qty = reader.nextInt();
                 int sales = reader.nextInt();
-                newLine = String.valueOf(qty) + " " + String.valueOf(sales) ;
+                newLine = String.valueOf(qty) + " " + String.valueOf(sales);
                 writerOut.write(newLine);
                 item.delete();
                 boolean successful = itemTemp.renameTo(item);
 
-
                 //dataToReplace += qty + " " +  sales;
-
                 //oldContent = oldContent +
             }
             reader.close();
@@ -671,13 +643,8 @@ public class WelcomePage implements ActionListener {
             e.printStackTrace();
             JOptionPane alert = new JOptionPane("Sorry");
             frame.add(alert);
-            alert.setBounds(50,50,250,300);
+            alert.setBounds(50, 50, 250, 300);
             alert.setVisible(true);
         }
     }
-
-
-
-
-
 }
