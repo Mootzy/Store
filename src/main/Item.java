@@ -52,6 +52,10 @@ public class Item
 	{
 		return name + " Color: " + color + " " + "$" + cost + " quantity: " + qty + " sales: " + sales;
 	}
+	public String csvFormat(){
+		return name + color + cost +" " + qty +" " + sales ;
+	}
+
 
 	/**
 	 * @return the name

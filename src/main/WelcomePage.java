@@ -14,14 +14,17 @@ public class WelcomePage implements ActionListener {
     //File for inputing admin's inventory text file.
     final File item = new File("Item.txt");
     File itemTemp = new File("ItempTemp.txt");
+    File writeFile = new File("writeFile.txt");
 
     //Frame to display entier GUI
     final JFrame frame = new JFrame();
 
+    //Pretty sure its this line thats causing issues on windows devices
+    //**********
     final String userDir = System.getProperty("user.home");
-
     //FileChooser for when ADMIN selects
     final JFileChooser fc = new JFileChooser(userDir);
+    //this block of code.
 
     //ADMIN label denoting this is the stores current Inventory
     final JLabel welcomeLabel = new JLabel("Store Inventory");
@@ -48,6 +51,7 @@ public class WelcomePage implements ActionListener {
     final JButton addToCart = new JButton("add to cart");
     final JButton logout = new JButton("logout");
     final JButton managerViewButton = new JButton("Insight");
+    final JButton writeButton = new JButton("write file");
 
     //Alert user when out of Qty for object
     final JOptionPane outOfQty = new JOptionPane();
@@ -59,24 +63,11 @@ public class WelcomePage implements ActionListener {
 
     final JTable inventoryTable = new JTable();
 
-    //columns for Table
-    String[] columns = new String[]{
-
-            "Name",
-            "Color",
-            "Cost",
-            "Quantity",
-            "Sales this Month"
-    };
-
-
-
-
-
     //Used to find value of radio Button Selection from USER
     //currently bugged... probably try using hashmap next
     //always provides value of "Joggers" ATM
     Integer userChoice = 0;
+
 
     //Track users total
     Double ongoingTotal = 0.0;
@@ -127,7 +118,7 @@ public class WelcomePage implements ActionListener {
             managerViewButton.addActionListener(this::managerViewAction);
 
             //Create Inventory Preview
-            inventoryPreview.setText(readFile(item));
+            inventoryPreview.setText(readFile(writeFile));
             inventoryPreview.setBounds(50, 400, 500, 75);
             inventoryPreview.setEditable(false);
             inventoryPreview.setFont(new Font(null, Font.TRUETYPE_FONT, 12));
@@ -175,6 +166,9 @@ public class WelcomePage implements ActionListener {
             JRadioButton userOptions;
 
             shopMenu.setText(readFile(item));
+
+
+
             System.out.println(userInventory.size() + " here i am the size of userInventory");
 
             //****CREATES JRADIONBUTTON FOR EACH userInventory index, increments userChoice to associate a numerical value with radioButton
@@ -205,16 +199,10 @@ public class WelcomePage implements ActionListener {
 
                 //Add to the JFrame the JRadioButton at index [i] of the ArrayList radioButtons
                 frame.add(radioButtons.get(i));
-
             }
-
             //TEST CODE TO SEE IF ARRAY IS PROPERPLY POPULATING
             System.out.println(userInventory.toString() + "\n" + "PAY ATTENTION TO 4th data member, aka the first Integer. " +
                     "This is a reflection of the quantitiy in store record BEFORE you 'add to cart' ");
-
-            //Test code to see radionButtons<> elements
-            // System.out.print(radioButtons.toString() + " radioBUTTONS TO STRING");
-            //System.out.println();
 
             //Add to cart button
             addToCart.setBounds(50, 500, 175, 25);
@@ -224,6 +212,13 @@ public class WelcomePage implements ActionListener {
             addToCart.addActionListener(this::addToCartAction);
             addToCart.addActionListener(this::radioButtonValue);
             addToCart.setActionCommand(radioButtons.get(userChoice).getText());
+
+            writeButton.setBounds(0, 75, 15, 15);
+            writeButton.setVisible(true);
+            writeButton.setFocusable(false);
+            //writeButton.
+            writeButton.addActionListener(this::writeFileAction);
+            //writeButton.addActionListener(this::radioButtonValue);
 
             //ViewCart Button
             viewCart.setBounds(225, 500, 175, 25);
@@ -325,6 +320,8 @@ public class WelcomePage implements ActionListener {
         }
     }
 
+
+
     //Adds actionEvent to addToCart Button... stil need to make 'add another item' prompt function properly
     public void actionPerform(ActionEvent a) {
         if (a.getSource() == addToCart) {
@@ -344,7 +341,6 @@ public class WelcomePage implements ActionListener {
 
     public void managerViewAction(ActionEvent e) {
         if (e.getSource() == managerViewButton) {
-
             double totalProfit = 0.0;
             totalProfit += dailyProfit;
 
@@ -357,10 +353,16 @@ public class WelcomePage implements ActionListener {
             profit.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
             profit.setFocusable(false);
 
+            writeButton.setBounds(0, 200, 125, 25);
+            writeButton.setVisible(true);
+            writeButton.setFocusable(false);
+            writeButton.addActionListener(this::writeFileAction);
+
             inventoryPreview.setBounds(0, 150, 100, 150);
             inventoryPreview.setVisible(true);
             inventoryPreview.setBackground(new Color(managerViewFrame.getBackground().getRGB(), true));
 
+            managerViewFrame.add(writeButton);
             managerViewFrame.add(profit);
             managerViewFrame.add(inventoryPreview);
             managerViewFrame.setTitle("Manager Insight");
@@ -411,6 +413,7 @@ public class WelcomePage implements ActionListener {
             //  Set/Change the values of the QTY and SALES
             userInventory.get(userChoice).setQty(qtyRemoved);
             userInventory.get(userChoice).setSales(saleAdded);
+            writeToFile(writeFile,item);
 
             System.out.println((
                     userInventory.toString() + "\n" +
@@ -429,13 +432,13 @@ public class WelcomePage implements ActionListener {
             cartPrev.setText(userCart.toString().replace("[", "").replace("]", ""));
             cartPrev.update(cartPrev.getGraphics());
 
-
             totalPreview.setText("total: $" + ongoingTotal.toString());
             totalPreview.update(totalPreview.getGraphics());
             frame.add(cartPrev);
 
             System.out.println(userCart.toString());
             System.out.println(ongoingTotal + "(tax not yet included)");
+
         }
 
     }
@@ -455,7 +458,6 @@ public class WelcomePage implements ActionListener {
      *
      * @param e
      */
-
     public void radioButtonValue(ActionEvent e) {
         if (e.getSource() == addToCart) {
             String returnValue = e.getActionCommand();
@@ -499,7 +501,8 @@ public class WelcomePage implements ActionListener {
                 if (userInventory != null) {
 
                     userInventory.add(newItem);
-                    customerItem += newItem.toString() + "\n";
+                    //customerItem += newItem.toString() + "\n";
+                    customerItem += newItem.csvFormat() + "\n";
                 }
                 //code to debug only printing cost color and name... working in console
                 // System.out.println(newItem.itemInfo(newItem) + " here i am");
@@ -587,6 +590,12 @@ public class WelcomePage implements ActionListener {
         }
     }
 
+    public void writeFileAction(ActionEvent e) {
+        if (e.getSource() == writeButton) {
+            writeToFile(writeFile,item);
+        }
+    }
+
     public void viewCartAction(ActionEvent e) {
         if (e.getSource() == viewCart) {
             JFrame checkout = new JFrame();
@@ -647,4 +656,43 @@ public class WelcomePage implements ActionListener {
             alert.setVisible(true);
         }
     }
+
+    public void writeToFile(File fileToWrite, File fileToRead){
+    try{
+        FileWriter fileWriter = new FileWriter(fileToWrite);
+        fileWriter.write(readFile(fileToRead));
+
+        fileWriter.close();
+        System.out.println("Succesfully wrote to file");
+
+
+        //Curently overwrites whatever text is there.
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+
+    }
+
+
+
 }
+////
+/*
+
+
+Part 7: Create a managers report.
+
+
+
+Display the inventory when the manager types in a password.
+Show the inventory, sales for the day,
+and the number of items that could have been sold if the inventory had not run out.
+Let the manager “buy” more inventory
+and store the new values back into the file.
+use a new file name until you are certain the file is writing correct
+
+
+
+
+ */

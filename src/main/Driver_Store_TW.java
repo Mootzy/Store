@@ -10,11 +10,7 @@ public class Driver_Store_TW
 	public static void main( String[ ] args )
 	{
 		IDandPasswords idandPasswords = new IDandPasswords ( );
-
 		LoginPage loginPage = new LoginPage ( idandPasswords.getLoginInfo ( ) );
-		
-		
-		
 	}
 
 }
@@ -78,4 +74,13 @@ public class Driver_Store_TW
  *
  *
  *
+ *
+ * pt 7. Monday nov 23 11:23pm
+ *
+ * Haven't finished this one as fully as i would like. Created method to write to file
+ * Have to submit soon as it's nearly midnight...
+ * Shawn, why do i need to spend 5-7 hours on a single portion of a project just to recieve a 0?
+ * added write file action to add to cart button, currently stuck in a loop have to figure out how to
+ * actually write and read to same file perhaps create a temp file where in its created,
+ * written to, read from, then deleted.....
  * */
